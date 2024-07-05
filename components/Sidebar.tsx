@@ -13,7 +13,7 @@ const Sidebar = () => {
     <section className="sticky left-0 top-0 flex h-screen w-fit flex-col justify-between bg-dark-1 p-6 pt-28 text-white max-sm:hidden lg:w-[264px]">
       <div className="flex flex-1 flex-col gap-6">
         {sidebarLinks.map((link) => {
-          const isActive = link.route === pathname || pathname.startsWith(link.route)
+          const isActive = link.route === pathname || pathname.startsWith(`${link.route}/`)
           return (
             <Link
               href={link.route}
@@ -29,6 +29,7 @@ const Sidebar = () => {
                 alt={link.label} 
                 width={24} 
                 height={24}
+                style={{ width: 'auto', height: 'auto' }}
               />
               <p className="text-lg font-semibold  max-md:hidden" >
                 {link.label}
