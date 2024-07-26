@@ -18,6 +18,7 @@ export const useGetCalls = () => {
         // https://getstream.io/video/docs/react/guides/querying-calls/#filters
         const { calls } = await client.queryCalls({
           sort: [{ field: 'starts_at', direction: -1 }],
+          // 过滤条件为通话的 starts_at 存在，并且通话创建者为当前用户或当前用户是成员之一
           filter_conditions: {
             starts_at: { $exists: true },
             $or: [
@@ -40,10 +41,12 @@ export const useGetCalls = () => {
 
   const now = new Date();
 
+  // 过滤出已结束的会议
   const endedCalls = calls?.filter(({ state: { startsAt, endedAt } }: Call) => {
     return (startsAt && new Date(startsAt) < now) || !!endedAt
   })
 
+  // 过滤出即将开始的会议
   const upcomingCalls = calls?.filter(({ state: { startsAt } }: Call) => {
     return startsAt && new Date(startsAt) > now
   })
