@@ -10,8 +10,11 @@ import React, { useState } from 'react'
 
 const Meeting = ({ params }: { params: { id: string } }) => {
   const { user, isLoaded } = useUser();
+
+  // 表示是否完成了会议设置（包括摄像头、声音等）
   const [isSetupComplete, setIsSetupComplete] = useState(false);
 
+  // 表示是否获取到call（通话会话的实例，包含了通话的状态和控制逻辑，允许你管理和操作通话的各个方面）
   const { call, isCallLoading } = useGetCallById(params.id);
 
   if (!isLoaded || isCallLoading) return <Loader />;
