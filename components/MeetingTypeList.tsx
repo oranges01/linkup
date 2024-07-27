@@ -10,6 +10,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Textarea } from './ui/textarea';
 
 import ReactDatePicker from 'react-datepicker';
+import { Input } from './ui/input';
 
 
 const MeetingTypeList = () => {
@@ -29,7 +30,7 @@ const MeetingTypeList = () => {
     if (!user || !client) return;
     
     try {
-      // 预约会议需要选择日期和时间
+      // 选择日期和时间
       if (!values.dateTime) {
         toast({title: 'Please select a date and time'})
         return;
@@ -61,7 +62,6 @@ const MeetingTypeList = () => {
       }
       toast({title: 'Meeting created successfully'})
     } catch (error) {
-      console.error(error);
       toast({title: 'Failed to create meeting'})
     }
   }
@@ -127,7 +127,6 @@ const MeetingTypeList = () => {
               className="w-full rounded bg-dark-3 p-2 focus:outline-none"
             />
           </div>
-
         </MeetingModal>
       )
       :(
@@ -145,6 +144,33 @@ const MeetingTypeList = () => {
           buttonText="Copy Meeting Link"
         />
       )}
+
+      {/* join meeting, 输入链接后直接进入会议页面 */}
+      <MeetingModal
+        isOpen={meetingState === 'isJoiningMeeting'}
+        onClose={() => setMeetingState(undefined)}
+        title="Type the link here"
+        handleClick={() => {router.push(values.link)}}
+        className="text-center"
+        buttonText="Join Meeting"
+      >
+        <Input
+          placeholder="Meeting link"
+          onChange={(e) => setValues({ ...values, link: e.target.value })}
+          className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+        />
+      </MeetingModal>
+
+      {/* instant meeting, 直接创建会议 */}
+      <MeetingModal
+        isOpen={meetingState === 'isInstantMeeting'}
+        onClose={() => setMeetingState(undefined)}
+        title="Start an Instant Meeting"
+        className="text-center"
+        buttonText="Start Meeting"
+        handleClick={createMeeting}
+      />
+
     </section>
   )
 }

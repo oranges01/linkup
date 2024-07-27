@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { LayoutList, Users } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import EndCallButton from './EndCallButton'
 import Loader from './Loader'
 
@@ -17,10 +17,11 @@ type CallLayoutType = 'grid' | 'speaker-left' | 'speaker-right'
 
 const MeetingRoom = () => {
 
+  const router = useRouter()
+
   // 个人房间(非主持人)
   const searchParams = useSearchParams()
   const isPersonalRoom = !!searchParams.get('personal')
-  console.log('isPersonalRoom', isPersonalRoom)
 
   // 管理当前speaker的布局状态
   const [layout, setLayout] = useState<CallLayoutType>('speaker-left')
@@ -59,7 +60,7 @@ const MeetingRoom = () => {
       </div>
       <div className='fixed bottom-0 left-0 flex w-full items-center justify-center gap-5 flex-wrap'>
         {/* 控制按钮 */}
-        <CallControls />
+        <CallControls onLeave={() => router.push('/')} />
         {/* 布局切换按钮 */}
         <DropdownMenu>
           <div className='flex items-center'>
